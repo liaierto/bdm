@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <ServiceManager name ="ServiceManager">
+    <objectMetaService name="objectMetaService" class="com.liaierto.service.TObjectMetaService"/>
+    <objectMethodService name="objectMethodService" class="com.liaierto.service.TObjectMethodService"/>
+    <objectService name="objectService" class="com.liaierto.service.TObjectService"/>
+    <methodGroupService name="methodGroupService" class="com.liaierto.service.TMethodGroupService"/>
+    <methodService name="methodService" class="com.liaierto.service.TMethodService"/>
+  </ServiceManager>

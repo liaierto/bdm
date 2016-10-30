@@ -1,0 +1,231 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DataTables</title>
+  <meta name="description" content="这是一个 table 页面">
+  <meta name="keywords" content="table">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="assets/i/1.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/i/1.png">
+  <link href="//cdn.bootcss.com/datatables/1.10.9/css/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <link href="jd/css/plugins/jqgrid/ui.jqgrid.css" rel="stylesheet">
+  <link href="jd/css/style.css?v=2.2.0" rel="stylesheet">
+  
+  <style>
+  
+  #my-columns{
+  	z-index:1120;
+  }
+  
+  .am-active-im{
+  	z-index:1111!important;
+  }
+  
+  </style>
+    
+  <script src="//cdn.bootcss.com/datatables/1.10.9/js/jquery.js"></script>
+  <script type="text/javascript" src="assets/json/jquery.json-2.2.js"></script>
+  <script type="text/javascript" src="assets/json/jsonpath-0.8.0.js"></script> 
+  <script src="jd/js/plugins/jqgrid/i18n/grid.locale-cn.js"></script>
+  <script src="jd/js/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+  <script src="assets/js/amazeui.min.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="TM/tmbase.js"></script>
+  <script src="TM/tm.js"></script>
+  <script>
+  
+  $(document).ready(function() {
+ 	   
+	   tmBase.callRemot("methodGroupService", "query",function(groups){
+		   tmBase.groupAppend(groups);
+		   tmBase.methodTableInit();
+		  });
+	  
+	   tmBase.columnsTableInit();
+ 	  
+  });
+ 
+  </script>
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+
+<header class="am-topbar admin-header">
+  <div class="am-topbar-brand">
+    <strong>DataTable</strong> <small>WEB,安卓通过各种API直接操作数据表</small>
+  </div>
+
+  <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+    <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+      <li class="am-dropdown" data-am-dropdown>
+        <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+          <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
+        </a>
+        <ul class="am-dropdown-content">
+          <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+        </ul>
+      </li>
+      <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+  <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+    <div class="am-offcanvas-bar admin-offcanvas-bar">
+    <ul class='am-list admin-sidebar-list' id="groups">
+    </ul>
+    </div>
+  </div>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content">
+
+    <div class="am-cf am-padding">
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">首页</strong> / <small>Table</small></div>
+    </div>
+
+    <div class="am-g">
+      <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+          <div class="am-btn-group am-btn-group-xs">
+            <button onclick="tmBase.addMethod()" type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+            <button onclick="tmBase.editMethod()" type="button" class="am-btn am-btn-default"><span class="am-icon-edit"></span> 编辑</button>
+            <button onclick="tmBase.delMethod()" type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="am-g">
+      <div class="am-u-sm-12">
+          <table id="methodTable" class="am-table am-table-striped am-table-hover table-main">
+        </table>
+         <div id="methodPager"></div>
+	  </div>
+	</div>
+  </div>
+ </div>
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="my-groups">
+  <div class="am-modal-dialog">
+  <div class="am-modal-hd">新建分组</div>
+   <form class="am-form am-form-horizontal">
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
+    <div class="am-u-sm-10">
+      <input type="text" id="groupName" placeholder="比如用户管理组">
+    </div>
+  </div>
+
+  </form>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>保存</span>
+    </div>
+  </div>
+</div>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="my-method">
+  <div class="am-modal-dialog">
+  <div class="am-modal-hd">方法</div>
+   <form class="am-form am-form-horizontal">
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
+    <div class="am-u-sm-10">
+      <input type="text" id="methodId" placeholder="">
+    </div>
+  </div>
+<div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">描述</label>
+    <div class="am-u-sm-10">
+      <input type="text" id="methodName" placeholder="">
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">类型</label>
+    <div class="am-u-sm-10">
+        <select id="methodType" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
+		  <option value="add">单表新增</option>
+		  <option value="save">单表保存</option>
+		  <option value="delete">单表删除</option>
+		  <option value="query">单表查询不分页</option>
+		  <option value="queryPage">单表查询分页</option>
+		  <option value="querys">自定义查询不分页</option>
+		  <option value="queryPages">自定义查询分页</option>
+		</select>
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label  class="am-u-sm-2 am-form-label">关联表</label>
+    <div class="am-u-sm-10">
+     <select id="tableSelect" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
+		  <option value="null">空</option>
+		</select>
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询列</label>
+    <div class="am-u-sm-10">
+      <div class="am-input-group am-input-group-primary">
+      <input type="text" class="am-form-field" id="searchColumn">
+      <span class="am-input-group-btn">
+        <button class="am-btn am-btn-primary" type="button" onclick="tmBase.colmnSearch()"><span class="am-icon-search"></span></button>
+      </span>
+      
+    </div>
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询参数</label>
+    <div class="am-u-sm-10">
+      <input type="text" id="methodParamer" placeholder="">
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询条件</label>
+    <div class="am-u-sm-10">
+      <input type="text" id="methodFilter" placeholder="">
+    </div>
+  </div>
+  </form>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>保存</span>
+    </div>
+  </div>
+</div>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="my-columns">
+  <div class="am-modal-dialog">
+  <div class="am-modal-hd">关联表的字段列表</div>
+   <form class="am-form am-form-horizontal">
+     <table id="columnsTable" class="am-table am-table-striped am-table-hover table-main">
+        </table>
+
+  </form>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>保存</span>
+    </div>
+  </div>
+</div>
+<footer>
+  <hr>
+  <p class="am-padding-left">© 2015 by liaier</p>
+</footer>
+
+</body>
+</html>
