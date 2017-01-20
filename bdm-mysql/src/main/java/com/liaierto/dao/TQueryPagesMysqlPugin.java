@@ -8,21 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.liaierto.bean.IDataItem;
-import com.liaierto.utils.JsonObjectTools;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 
 public class TQueryPagesMysqlPugin {
 	private static Log log = LogFactory.getLog(TQueryPagesMysqlPugin.class);
    
-    public  String queryPage(IDataItem item,String content) throws Exception{
+    public  String queryPage(Map<String,Object> item, String content) throws Exception{
         ResultSet  resultSet  = null;
         JSONObject filter     = null;
         JSONObject ret        = new JSONObject();
@@ -31,15 +30,15 @@ public class TQueryPagesMysqlPugin {
         PreparedStatement statement = null;
         String[] valus = null;
         try {
-        	Connection con = (Connection) item.getValue("connection");
+        	Connection con = (Connection) item.get("connection");
         	
-        	JSONObject cont = JsonObjectTools.getJSObj(content);
+        	JSONObject cont = JSONObject.parseObject(content);
         	curentPage = Integer.parseInt(cont.get("curentPage").toString());
         	pageRow = Integer.parseInt(cont.get("pageRow").toString());
-        	filter = JsonObjectTools.getJSObj(cont.getString("filter"));
+        	filter = JSONObject.parseObject(cont.getString("filter"));
         	String value = filter.getString("value");
-        	String fileterKey = item.getString("filter");//过滤参数
-        	String parameter  = item.getString("parameter");//字段转换参数
+        	String fileterKey = item.get("filter").toString();//过滤参数
+        	String parameter  = item.get("parameter").toString();//字段转换参数
         	if(!"".equals(value)){
         		valus = value.split(",");
         	}

@@ -59,14 +59,14 @@ public class BaseAction extends HttpServlet {
             args2[0] = String.class;
             Method pMethod =  pClazz.getMethod("setStatement",args);
             Method pMethod2 =  pClazz.getMethod(pMethods,args2);
-            String pResult = "";
+            String pResult = null;
             connection = DBUtil.getConnection();
             statement  = connection.createStatement();
             pMethod.invoke(pObject, new Object[]{statement});
-            pResult = (String) pMethod2.invoke(pObject,new Object[]{pParameter});
+            pResult =  (String)pMethod2.invoke(pObject,new Object[]{pParameter});
             log.info(pResult);
             response.getWriter().print(pResult);
-        } catch (Exception e) {
+        	} catch (Exception e) {
             response.getWriter().print(ResultMsg.unknownMsg);
             log.error(e);
         }

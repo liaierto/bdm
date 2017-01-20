@@ -5,4 +5,4 @@
     <objectService name="objectService" class="com.liaierto.service.TObjectService"/>
     <methodGroupService name="methodGroupService" class="com.liaierto.service.TMethodGroupService"/>
     <methodService name="methodService" class="com.liaierto.service.TMethodService"/>
-  </ServiceManager>
+</ServiceManager>

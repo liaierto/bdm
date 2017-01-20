@@ -1,21 +1,22 @@
 package com.liaierto.service;
 
 
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang.text.StrBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.liaierto.bean.IDataItem;
-import com.liaierto.bean.IFormData;
+
+import com.alibaba.fastjson.JSONObject;
 import com.liaierto.bean.IQueryDB;
 import com.liaierto.bean.InputForm;
-import com.liaierto.beanImpl.TDataItem;
 import com.liaierto.beanImpl.TInputForm;
 import com.liaierto.beanImpl.TQueryDB;
 import com.liaierto.service.interfaces.IObjectMethodService;
-import com.liaierto.utils.JsonObjectTools;
 import com.liaierto.utils.ResultMsg;
-import net.sf.json.JSONObject;
 
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class TMethodService extends TService implements IObjectMethodService {
@@ -30,7 +31,7 @@ public class TMethodService extends TService implements IObjectMethodService {
 	       int          currentPage = 1;
 	       int          pageRow     = 10;
 	        try {
-	            JSONObject contObj = JsonObjectTools.getJSObj(content);
+	            JSONObject contObj = JSONObject.parseObject(content);
 	            queryDB = TQueryDB.getInstance();
 	            
 	            queryDB.setTableName(new String[]{"t_method"}); 
@@ -49,8 +50,8 @@ public class TMethodService extends TService implements IObjectMethodService {
 	            if(i!=0){
 	               totalPage = totalPage+1;
 	            }
-	            IFormData formData = super.queryByPage(queryDB, pageRow, currentPage);
-	            obj.put("rows", formData.getJsonArrayRows().toString());
+	            List<Map<String,Object>> formData = super.queryByPage(queryDB, pageRow, currentPage);
+	            obj.put("rows", JSON.toJSON(formData));
 	            obj.put("total", totalPage);
 	            return obj.toString();
 	        } catch (Exception e) {
@@ -64,11 +65,11 @@ public class TMethodService extends TService implements IObjectMethodService {
 		InputForm inputForm = null;
 	    boolean    result    = false ;
 	    String     response = "";
-	    IDataItem dataItem = new TDataItem();
+	    Map<String,Object> dataItem = new HashMap<String,Object>();
         try {
         	
         	JSONObject rowData   = null;
-            rowData = JSONObject.fromObject(content);
+            rowData = JSONObject.parseObject(content);
             String id            = rowData.getString("id");
             
             inputForm = TInputForm.getInstance();
@@ -78,18 +79,18 @@ public class TMethodService extends TService implements IObjectMethodService {
             
             result = super.delete(inputForm);
         	if(result){
-        		dataItem.setValue("code", ResultMsg.sucessCode);
-        		dataItem.setValue("msg", ResultMsg.sucessMsg);
+        		dataItem.put("code", ResultMsg.sucessCode);
+        		dataItem.put("msg", ResultMsg.sucessMsg);
         	}else{
-        		dataItem.setValue("code", ResultMsg.errorCode);
-        		dataItem.setValue("msg", ResultMsg.errorMsg);
+        		dataItem.put("code", ResultMsg.errorCode);
+        		dataItem.put("msg", ResultMsg.errorMsg);
         	}
         } catch (Exception e) {
             log.error(e);
-            dataItem.setValue("code", ResultMsg.unknownCode);
-    		dataItem.setValue("msg", ResultMsg.unknownMsg);
+            dataItem.put("code", ResultMsg.unknownCode);
+    		dataItem.put("msg", ResultMsg.unknownMsg);
         }
-        response = dataItem.getJsonRow().toString();
+        response = JSON.toJSONString(dataItem);
 		return response;
        
 	}
@@ -97,8 +98,8 @@ public class TMethodService extends TService implements IObjectMethodService {
 	public String update(String content) {
         InputForm inputForm = TInputForm.getInstance();
        
-        IDataItem dataItem = new TDataItem();
-        JSONObject rowData = JsonObjectTools.getJSObj(content);
+        Map<String ,Object> dataItem = new HashMap<String,Object>();
+        JSONObject rowData = JSONObject.parseObject(content);
         String     response  = "";
         try{
                 inputForm.setTableName("t_method");
@@ -126,14 +127,14 @@ public class TMethodService extends TService implements IObjectMethodService {
                     super.insert(inputForm);
                 }
                 
-            dataItem.setValue("code", ResultMsg.sucessCode);
-    		dataItem.setValue("msg", ResultMsg.sucessMsg);
+            dataItem.put("code", ResultMsg.sucessCode);
+    		dataItem.put("msg", ResultMsg.sucessMsg);
         }catch(Exception e){
-        	 dataItem.setValue("code", ResultMsg.unknownCode);
-     		 dataItem.setValue("msg", ResultMsg.unknownMsg);
+        	 dataItem.put("code", ResultMsg.unknownCode);
+     		 dataItem.put("msg", ResultMsg.unknownMsg);
             log.error(e);
         }
-        response = dataItem.getJsonRow().toString();
+        response = JSON.toJSONString(dataItem);
     	return response;
         
     }
@@ -141,19 +142,19 @@ public class TMethodService extends TService implements IObjectMethodService {
 
 	public String queryMethod(String content) {
 	       IQueryDB     queryDB    = null;
-	       JSONObject   obj         = new JSONObject();
+	       Map<String,Object> obj   = new HashMap<String,Object>();
 	       int          currentPage = 1;
 	       int          pageRow     = 10;
 	        try {
-	            JSONObject contObj = JsonObjectTools.getJSObj(content);
+	            JSONObject contObj = JSONObject.parseObject(content);
 	            queryDB = TQueryDB.getInstance();
 	            
 	            queryDB.setTableName(new String[]{"t_object"});
 	            queryDB.setQueryField(new String[]{"id","name"});
 	            queryDB.setWhereFileds("role", contObj.getString("role"));
-	            IFormData formData = super.queryByPage(queryDB, pageRow, currentPage);
-	            obj.put("rows", formData.getJsonArrayRows().toString());
-	            return obj.toString();
+	            List<Map<String,Object>> formData = super.queryByPage(queryDB, pageRow, currentPage);
+	            obj.put("rows", JSON.toJSON(formData));
+	            return JSON.toJSONString(obj);
 	        } catch (Exception e) {
 	            log.error(e);
 	            return "false";

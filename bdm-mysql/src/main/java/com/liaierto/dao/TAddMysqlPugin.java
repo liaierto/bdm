@@ -4,32 +4,33 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.liaierto.bean.IDataItem;
-import com.liaierto.utils.JsonObjectTools;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 
 
 public class TAddMysqlPugin {
 	private static Log log = LogFactory.getLog(TAddMysqlPugin.class);
-    public  boolean insert(IDataItem item,String content) throws Exception {
+    public  boolean insert(Map<String,Object> item, String content) throws Exception {
         JSONArray dataArray = null;
         JSONObject rowData  = null;
         Statement statement = null;
         try {
-        	Connection con = (Connection) item.getValue("connection");
+        	Connection con = (Connection) item.get("connection");
         	statement = con.createStatement();
-        	JSONObject cont = JsonObjectTools.getJSObj(content);
-        	dataArray = JsonObjectTools.getJSAObj(cont.getString("rows"));
+        	JSONObject cont = JSONObject.parseObject(content);
+        	dataArray = JSONArray.parseArray(cont.getString("rows"));
         	Iterator iter = dataArray.iterator();
         	while (iter.hasNext()) {
         		StringBuffer sql         = new StringBuffer();
                 StringBuffer columnNames = new StringBuffer();
                 StringBuffer values      = new StringBuffer();
-                sql.append("insert into " + item.getString("tableName")+"(");
+                sql.append("insert into " + item.get("tableName")+"(");
         		rowData = (JSONObject) iter.next();
         		for (Iterator itr = rowData.keySet().iterator(); itr.hasNext();) {
                     String pColumnName  = itr.next().toString();

@@ -3,34 +3,35 @@ package com.liaierto.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.liaierto.bean.IDataItem;
-import com.liaierto.utils.JsonObjectTools;
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 
 
 public class TDeleteMysqlPugin {
 	private static Log log = LogFactory.getLog(TDeleteMysqlPugin.class);
    
-    public  boolean delete(IDataItem item,String content) throws Exception {
+    public  boolean delete(Map<String,Object> item, String content) throws Exception {
         JSONObject filter = null;
         PreparedStatement statement = null;
         String[] valus = null;
         try {
-        	Connection con = (Connection) item.getValue("connection");
+        	Connection con = (Connection) item.get("connection");
         	
-        	JSONObject cont = JsonObjectTools.getJSObj(content);
-        	filter = JsonObjectTools.getJSObj(cont.getString("filter"));
+        	JSONObject cont = JSONObject.parseObject(content);
+        	filter = JSONObject.parseObject(cont.getString("filter"));
         	String value = filter.getString("value");
-        	String fileterKey = item.getString("filter");//过滤参数
+        	String fileterKey = item.get("filter").toString();//过滤参数
         	if(!"".equals(value)){
         		valus = value.split(",");
         	}
         	
             StringBuffer sql  =  new StringBuffer();
-            sql.append("delete from " + item.getString("tableName"));
+            sql.append("delete from " + item.get("tableName"));
             sql.append(" where 1=1 ");
             if(!"".equals(fileterKey)){
             	sql.append(" and ");

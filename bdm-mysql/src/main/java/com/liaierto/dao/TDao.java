@@ -4,26 +4,21 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.liaierto.bean.IFormData;
 import com.liaierto.bean.InputForm;
 import com.liaierto.bean.IQueryDB;
-import com.liaierto.beanImpl.TDataItem;
-import com.liaierto.beanImpl.TFormData;
 import com.liaierto.dao.interfaces.IDao;
 import com.liaierto.utils.TTableMeta;
 
 public class TDao implements IDao {
 
 	private static Log log = LogFactory.getLog(TDao.class);
-	private Statement mStatement;
+
+    private Statement mStatement;
 	
 	public boolean insert(InputForm inputForm) {
         String tableName = inputForm.getTableName();
@@ -156,9 +151,9 @@ public class TDao implements IDao {
         }
     }
 
-	public IFormData query(IQueryDB queryDBManager){
+	public List<Map<String,Object>> query(IQueryDB queryDBManager){
 		ResultSet         pResultSet    = null;
-        TFormData         form            = new TFormData();
+        List<Map<String,Object>>         form            = new ArrayList<Map<String, Object>>();
         TTableMeta        pMeta         = TTableMeta.getInstance();
         String[]          tablesName      = queryDBManager.getTableName();
         String[]          queryField      = queryDBManager.getQueryField();
@@ -217,16 +212,16 @@ public class TDao implements IDao {
                 pMeta.setMeta(tableNameStr, pTableMap);
             }
             while(pResultSet.next()){
-                TDataItem pItem      = new TDataItem();
+                Map<String,Object> pItem      = new HashMap<String,Object>();
                 for(int i=0;i<qFieldLen;i++){
                      String pFieldName = queryField[i];
                      if("BLOB".equals(pMeta.getMeta(tableNameStr, pFieldName))){
-                         pItem.setValue(pFieldName,new String((byte[])pResultSet.getObject(pFieldName),"utf-8")); 
+                         pItem.put(pFieldName,new String((byte[])pResultSet.getObject(pFieldName),"utf-8"));
                      }else{
-                         pItem.setValue(pFieldName,pResultSet.getString(pFieldName));
+                         pItem.put(pFieldName,pResultSet.getString(pFieldName));
                      }
                 }
-                form.addItem(pItem);
+                form.add(pItem);
              }
             return  form;
             
@@ -237,9 +232,9 @@ public class TDao implements IDao {
         }
     }
 
-	public IFormData queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage) {
+	public List<Map<String,Object>> queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage) {
 		ResultSet         pResultSet    = null;
-        IFormData         form            = new TFormData();
+        List<Map<String,Object>>         form            = new ArrayList<Map<String, Object>>();
         TTableMeta        pMeta         = TTableMeta.getInstance();
         String[]          tablesName      = queryDBManager.getTableName();
         String[]          queryField      = queryDBManager.getQueryField();
@@ -309,7 +304,7 @@ public class TDao implements IDao {
             }
             
             while(pResultSet.next()){
-                TDataItem pItem = new TDataItem();
+                Map<String,Object> pItem = new HashMap<String,Object>();
                 for(int i=0;i<qFieldLen;i++){
                 	 String pFieldName = "";
                 	  if(queryField[i].contains(".")){
@@ -319,17 +314,17 @@ public class TDao implements IDao {
                 	  }
                     if("BLOB".equals(pMeta.getMeta(pTableNameStr, pFieldName))){
                         if(pResultSet.getObject(pFieldName)!=null){
-                            pItem.setValue(pFieldName,new String((byte[])pResultSet.getObject(pFieldName),"utf-8")); 
+                            pItem.put(pFieldName,new String((byte[])pResultSet.getObject(pFieldName),"utf-8"));
                         }else{
-                            pItem.setValue(pFieldName,""); 
+                            pItem.put(pFieldName,"");
                         }
                         
                     }else{
-                        pItem.setValue(pFieldName,pResultSet.getString(pFieldName));
+                        pItem.put(pFieldName,pResultSet.getString(pFieldName));
                     }
                    
                 }
-                form.addItem(pItem);
+                form.add(pItem);
              }
             return  form;
             

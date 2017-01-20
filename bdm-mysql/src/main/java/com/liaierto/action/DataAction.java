@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-import com.liaierto.bean.IDataItem;
-import com.liaierto.bean.IFormData;
 import com.liaierto.bean.IQueryDB;
 import com.liaierto.beanImpl.TQueryDB;
 import com.liaierto.db.DBUtil;
@@ -56,11 +56,11 @@ public class DataAction extends HttpServlet {
 		            queryDB.setTableName(new String[]{"t_method"});
 		            queryDB.setQueryField(new String[]{"type","clomn","parameter","filter","tableName"});
 		            queryDB.setWhereFileds("name", method);
-		            IFormData formData = dataOperation.query(queryDB);
-		            IDataItem item= formData.getRowItem(0);
-		            item.setValue("connection", connection);
+					List<Map<String,Object>> formData = dataOperation.query(queryDB);
+		            Map<String ,Object> item= formData.get(0);
+		            item.put("connection", connection);
 		            
-		            String type = item.getString("type");
+		            String type = item.get("type").toString();
 		            if("add".equals(type)){
 		            	result = dataOperation.add(item, parameter);
 		            }
@@ -68,12 +68,12 @@ public class DataAction extends HttpServlet {
 						queryDB = TQueryDB.getInstance();
 			            queryDB.setTableName(new String[]{"meta"});
 			            queryDB.setQueryField(new String[]{"name"});
-			            queryDB.setWhereFileds("object", item.getString("tableName"));
+			            queryDB.setWhereFileds("object", item.get("tableName").toString());
 			            queryDB.setWhereFileds("iskey","Yes");
 			            queryDB.setWhereFileds("auto","Yes");
-			            IFormData metaData = dataOperation.query(queryDB);
-			            if(metaData.getRowCount()>0){
-			            	 item.setValue("keyName", metaData.getRowItem(0).getString("name"));
+						List<Map<String,Object>> metaData = dataOperation.query(queryDB);
+			            if(metaData.size()>0){
+			            	 item.put("keyName", metaData.get(0).get("name"));
 			            }
 			            result = dataOperation.save(item, parameter);
 			         }

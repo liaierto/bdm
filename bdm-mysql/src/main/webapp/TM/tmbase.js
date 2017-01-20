@@ -151,8 +151,9 @@
 	          gridComplete: function(){
 	          	
 	          },
-				autowidth: false
-	      });       
+				autowidth: true
+	      });
+		$("#columnsTable").setGridWidth(530);
 	},
 	
 	addGroup : function(){

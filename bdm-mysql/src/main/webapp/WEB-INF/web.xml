@@ -23,7 +23,7 @@
     <description></description>
     <display-name>configDbActioin</display-name>
     <servlet-name>configDbActioin</servlet-name>
-    <servlet-class>com.liaierto.action.configDbActioin</servlet-class>
+    <servlet-class>com.liaierto.action.ConfigDbActioin</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>configDbActioin</servlet-name>
@@ -42,7 +42,7 @@
     <description></description>
     <display-name>DataAction</display-name>
     <servlet-name>DataAction</servlet-name>
-    <servlet-class>com.liaierto.action.DataAction2</servlet-class>
+    <servlet-class>com.liaierto.action.DataAction</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>DataAction</servlet-name>
@@ -52,7 +52,7 @@
     <description></description>
     <display-name>ResourceServlet</display-name>
     <servlet-name>ResourceServlet</servlet-name>
-    <servlet-class>com.liaierto.action.ResourceServlet</servlet-class>
+    <servlet-class>com.liaierto.action.ResourceAction</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ResourceServlet</servlet-name>
@@ -77,4 +77,13 @@
         <servlet-name>DruidStatView</servlet-name>
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>mindex.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>

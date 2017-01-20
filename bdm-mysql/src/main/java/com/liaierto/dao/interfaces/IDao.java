@@ -1,40 +1,41 @@
 package com.liaierto.dao.interfaces;
 
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 
-import com.liaierto.bean.IFormData;
 import com.liaierto.bean.InputForm;
 import com.liaierto.bean.IQueryDB;
 
 
 public interface IDao {
 	/****
-	 * �������ݿ�����
+	 *新增数据
 	 * @return boolean
 	 */
 	boolean  insert(InputForm inputForm);
 	/****
-	 * ɾ�����ݿ�����
+	 * 删除数据
 	 * @return boolean
 	 */
     boolean  delete(InputForm inputForm);
     /****
-	 * �������ݿ�����
+	 *更新数据
 	 * @return boolean
 	 */
     boolean  update(InputForm inputForm);
     /****
-	 * ��ѯ���ݿ�����
+	 * 查询数据
 	 * @return IFormData
 	 */
-    IFormData query(IQueryDB queryDBManager);
+	List<Map<String,Object>> query(IQueryDB queryDBManager);
     /****
-	 * ��ҳ��ѯ���ݿ�����
+	 * 查询分页数据
 	 * @return IFormData
 	 */
-    IFormData queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage);
+	List<Map<String,Object>> queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage);
     /****
-	 * ��ѯ��������������Ŀ
+	 * 查询数据行数
 	 * @return int
 	 */
     int queryOfRows(IQueryDB qeryDBManager);

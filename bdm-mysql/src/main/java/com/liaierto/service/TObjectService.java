@@ -1,26 +1,25 @@
 package com.liaierto.service;
 
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
-import com.liaierto.bean.IDataItem;
-import com.liaierto.bean.IFormData;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.liaierto.bean.IQueryDB;
 import com.liaierto.bean.InputForm;
-import com.liaierto.beanImpl.TDataItem;
 import com.liaierto.beanImpl.TInputForm;
 import com.liaierto.beanImpl.TQueryDB;
 import com.liaierto.service.interfaces.IObjectService;
 import com.liaierto.utils.DateTools;
-import com.liaierto.utils.JsonObjectTools;
 import com.liaierto.utils.ResultMsg;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 
 
@@ -37,7 +36,7 @@ public class TObjectService extends TService implements IObjectService {
         JSONObject rowData   = null;
         boolean    result    = false ;
         String     response  = "";
-        rowData = JSONObject.fromObject(content);
+        rowData = JSONObject.parseObject(content);
         String name          = rowData.getString("object");
         //String type          = rowData.getString("type");
     	String description   = rowData.getString("description");
@@ -53,15 +52,15 @@ public class TObjectService extends TService implements IObjectService {
 			log.error(e);
 		} 
     	result = super.insert(inputForm);
-    	IDataItem dataItem = new TDataItem();
+    	Map<String,Object> dataItem = new HashMap<String,Object>();
     	if(result){
-    		dataItem.setValue("code", ResultMsg.sucessCode);
-    		dataItem.setValue("msg", ResultMsg.sucessMsg);
+    		dataItem.put("code", ResultMsg.sucessCode);
+    		dataItem.put("msg", ResultMsg.sucessMsg);
     	}else{
-    		dataItem.setValue("code", ResultMsg.errorCode);
-    		dataItem.setValue("msg", ResultMsg.errorMsg);
+    		dataItem.put("code", ResultMsg.errorCode);
+    		dataItem.put("msg", ResultMsg.errorMsg);
     	}
-    	response = dataItem.getJsonRow().toString();
+    	response = JSON.toJSONString(dataItem,true);
 		return response;
 	}
 
@@ -71,7 +70,7 @@ public class TObjectService extends TService implements IObjectService {
 	       int          currentPage = 1;
 	       int          pageRow     = 10;
 	        try {
-	            JSONObject contObj = JsonObjectTools.getJSObj(content);
+	            JSONObject contObj = JSONObject.parseObject(content);
 	            queryDB = TQueryDB.getInstance();
 	            
 	            queryDB.setTableName(new String[]{"t_object"});
@@ -90,8 +89,8 @@ public class TObjectService extends TService implements IObjectService {
 	            if(i!=0){
 	               totalPage = totalPage+1;
 	            }
-	            IFormData formData = super.queryByPage(queryDB, pageRow, currentPage);
-	            obj.put("rows", formData.getJsonArrayRows().toString());
+				List<Map<String,Object>> formData = super.queryByPage(queryDB, pageRow, currentPage);
+	            obj.put("rows", JSON.toJSON(formData));
 	            obj.put("total", totalPage);
 	            return obj.toString();
 	        } catch (Exception e) {
@@ -105,11 +104,11 @@ public class TObjectService extends TService implements IObjectService {
 		InputForm inputForm = null;
 	    boolean    result    = false ;
 	    String     response = "";
-	    IDataItem dataItem = new TDataItem();
+		Map<String,Object> dataItem = new HashMap<String,Object>();
         try {
         	
         	JSONObject rowData   = null;
-            rowData = JsonObjectTools.getJSObj(content);
+            rowData = JSONObject.parseObject(content);
             String id            = rowData.getString("o_id");
             
             inputForm = TInputForm.getInstance();
@@ -119,18 +118,18 @@ public class TObjectService extends TService implements IObjectService {
             
             result = super.delete(inputForm);
         	if(result){
-        		dataItem.setValue("code", ResultMsg.sucessCode);
-        		dataItem.setValue("msg", ResultMsg.sucessMsg);
+        		dataItem.put("code", ResultMsg.sucessCode);
+        		dataItem.put("msg", ResultMsg.sucessMsg);
         	}else{
-        		dataItem.setValue("code", ResultMsg.errorCode);
-        		dataItem.setValue("msg", ResultMsg.errorMsg);
+        		dataItem.put("code", ResultMsg.errorCode);
+        		dataItem.put("msg", ResultMsg.errorMsg);
         	}
         } catch (Exception e) {
             log.error(e);
-            dataItem.setValue("code", ResultMsg.unknownCode);
-    		dataItem.setValue("msg", ResultMsg.unknownMsg);
+            dataItem.put("code", ResultMsg.unknownCode);
+    		dataItem.put("msg", ResultMsg.unknownMsg);
         }
-        response = dataItem.getJsonRow().toString();
+        response = JSON.toJSONString(dataItem,true);
 		return response;
        
 	}
@@ -139,10 +138,10 @@ public class TObjectService extends TService implements IObjectService {
         InputForm inputForm = TInputForm.getInstance();
         JSONArray dataArray = null;
         JSONObject rowData = null;
-        IDataItem dataItem = new TDataItem();
-        JSONObject cont = JsonObjectTools.getJSObj(content);
+		Map<String,Object> dataItem = new HashMap<String,Object>();
+        JSONObject cont = JSONObject.parseObject(content);
         String role = (String) cont.get("role");
-        dataArray = JsonObjectTools.getJSAObj(cont.getString("rows"));
+        dataArray = JSONArray.parseArray(cont.getString("rows"));
         Iterator iter = dataArray.iterator();
         String     response  = "";
         try{
@@ -168,14 +167,14 @@ public class TObjectService extends TService implements IObjectService {
                 }
                 
             }
-            dataItem.setValue("code", ResultMsg.sucessCode);
-    		dataItem.setValue("msg", ResultMsg.sucessMsg);
+            dataItem.put("code", ResultMsg.sucessCode);
+    		dataItem.put("msg", ResultMsg.sucessMsg);
         }catch(Exception e){
-        	 dataItem.setValue("code", ResultMsg.unknownCode);
-     		 dataItem.setValue("msg", ResultMsg.unknownMsg);
+        	 dataItem.put("code", ResultMsg.unknownCode);
+     		 dataItem.put("msg", ResultMsg.unknownMsg);
              log.error(e);
         }
-        response = dataItem.getJsonRow().toString();
+        response = JSON.toJSONString(dataItem,true);
     	return response;
         
     }
@@ -183,15 +182,15 @@ public class TObjectService extends TService implements IObjectService {
 	public String query(String content) {
 	       IQueryDB     queryDB    = null;
 	        try {
-	            JSONObject contObj = JsonObjectTools.getJSObj(content);
+	            JSONObject contObj = JSONObject.parseObject(content);
 	            queryDB = TQueryDB.getInstance();
 	            
 	            queryDB.setTableName(new String[]{"t_object"});
 	            queryDB.setQueryField(new String[]{"name","description"});
 	            queryDB.setWhereFileds("role", contObj.getString("role"));
 	            queryDB.setOrderSql("name desc");
-	            IFormData formData = super.query(queryDB);
-	            return formData.getJsonArrayRows().toString();
+				List<Map<String,Object>> formData = super.query(queryDB);
+	            return JSON.toJSONString(formData,true);
 	        } catch (Exception e) {
 	            log.error(e);
 	            return "false";
@@ -201,9 +200,9 @@ public class TObjectService extends TService implements IObjectService {
 
 	public String createObject(String content) {
 	       IQueryDB     queryDB    = null;
-	       IDataItem dataItem = new TDataItem();
+		   Map<String,Object> dataItem = new HashMap<String,Object>();
 	        try {
-	            JSONObject contObj = JsonObjectTools.getJSObj(content);
+	            JSONObject contObj = JSONObject.parseObject(content);
 	            queryDB = TQueryDB.getInstance();
 	            String obj = contObj.getString("object");
 	            String name = contObj.getString("name");
@@ -211,44 +210,44 @@ public class TObjectService extends TService implements IObjectService {
 	            queryDB.setQueryField(new String[]{"name","type","len","iskey"});
 	            queryDB.setWhereFileds("role", contObj.getString("role"));
 	            queryDB.setWhereFileds("object",obj );
-	            IFormData formData = super.query(queryDB);
+				List<Map<String,Object>> formData = super.query(queryDB);
 	            if(createTable(name,formData)){
-	            	dataItem.setValue("code", ResultMsg.sucessCode);
-	        		dataItem.setValue("msg", ResultMsg.sucessMsg);
+	            	dataItem.put("code", ResultMsg.sucessCode);
+	        		dataItem.put("msg", ResultMsg.sucessMsg);
 	            }else{
-	            	dataItem.setValue("code", ResultMsg.errorCode);
-	        		dataItem.setValue("msg", ResultMsg.errorMsg);
+	            	dataItem.put("code", ResultMsg.errorCode);
+	        		dataItem.put("msg", ResultMsg.errorMsg);
 	            }
-	            return dataItem.getJsonRow().toString();
+	            return JSON.toJSONString(dataItem);
 	        } catch (Exception e) {
 	            log.error(e);
-	            dataItem.setValue("code", ResultMsg.unknownCode);
-	     		dataItem.setValue("msg", ResultMsg.unknownMsg);
-	     		return dataItem.getJsonRow().toString();
+	            dataItem.put("code", ResultMsg.unknownCode);
+	     		dataItem.put("msg", ResultMsg.unknownMsg);
+	     		return JSON.toJSONString(dataItem,true);
 	        }
 	        
 	} 
 	
-	private boolean createTable(String obj,IFormData formData){
+	private boolean createTable(String obj, List<Map<String,Object>> formData){
 		String key = "";
 		StringBuffer sql = new StringBuffer();
     	sql.append("create table ");
     	sql.append(obj).append(" (");
-    	int count = formData.getRowCount();
+    	int count = formData.size();
     	for(int i=0;i<count;i++){
-    		 IDataItem dataItem = formData.getRowItem(i);
-    		 String field = dataItem.getString("name");
-    		 String type  = dataItem.getString("type");
-    		 String len   = dataItem.getString("len");
+			 Map<String,Object> dataItem = formData.get(i);
+    		 String field = dataItem.get("name").toString();
+    		 String type  = dataItem.get("type").toString();
+    		 String len   = dataItem.get("len").toString();
     		 if("string".equals(type)){
     			 type = "varchar";
     		 }
     		 sql.append(field).append(" ");
     		 sql.append(type);
     		 if(len!=null && !"".equals(len)){
-    			 sql.append("(").append(dataItem.getString("len")).append(") "); 
+    			 sql.append("(").append(dataItem.get("len")).append(") ");
     		 }
-    		 String isKey = dataItem.getString("iskey");
+    		 String isKey = dataItem.get("iskey").toString();
     		 if("Yes".equals(isKey)){
     			 sql.append("auto_increment");
     			 key = field;

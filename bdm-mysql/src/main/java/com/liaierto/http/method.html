@@ -17,22 +17,22 @@
   <link rel="stylesheet" href="assets/css/admin.css">
   <link href="jd/css/plugins/jqgrid/ui.jqgrid.css" rel="stylesheet">
   <link href="jd/css/style.css?v=2.2.0" rel="stylesheet">
-  
+
   <style>
-  
-  #my-columns{
-  	z-index:1120;
-  }
-  
-  .am-active-im{
-  	z-index:1111!important;
-  }
-  
+
+    #my-columns{
+      z-index:1120;
+    }
+
+    .am-active-im{
+      z-index:1111!important;
+    }
+
   </style>
-    
+
   <script src="//cdn.bootcss.com/datatables/1.10.9/js/jquery.js"></script>
   <script type="text/javascript" src="assets/json/jquery.json-2.2.js"></script>
-  <script type="text/javascript" src="assets/json/jsonpath-0.8.0.js"></script> 
+  <script type="text/javascript" src="assets/json/jsonpath-0.8.0.js"></script>
   <script src="jd/js/plugins/jqgrid/i18n/grid.locale-cn.js"></script>
   <script src="jd/js/plugins/jqgrid/jquery.jqGrid.min.js"></script>
   <script src="assets/js/amazeui.min.js"></script>
@@ -40,18 +40,18 @@
   <script src="TM/tmbase.js"></script>
   <script src="TM/tm.js"></script>
   <script>
-  
-  $(document).ready(function() {
- 	   
-	   tmBase.callRemot("methodGroupService", "query",function(groups){
-		   tmBase.groupAppend(groups);
-		   tmBase.methodTableInit();
-		  });
-	  
-	   tmBase.columnsTableInit();
- 	  
-  });
- 
+
+    $(document).ready(function() {
+
+      tmBase.callRemot("methodGroupService", "query",function(groups){
+        tmBase.groupAppend(groups);
+        tmBase.methodTableInit();
+      });
+
+      tmBase.columnsTableInit();
+
+    });
+
   </script>
 </head>
 <body>
@@ -85,8 +85,8 @@
   <!-- sidebar start -->
   <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
     <div class="am-offcanvas-bar admin-offcanvas-bar">
-    <ul class='am-list admin-sidebar-list' id="groups">
-    </ul>
+      <ul class='am-list admin-sidebar-list' id="groups">
+      </ul>
     </div>
   </div>
   <!-- sidebar end -->
@@ -112,27 +112,27 @@
 
     <div class="am-g">
       <div class="am-u-sm-12">
-          <table id="methodTable" class="am-table am-table-striped am-table-hover table-main">
+        <table id="methodTable" class="am-table am-table-striped am-table-hover table-main">
         </table>
-         <div id="methodPager"></div>
-	  </div>
-	</div>
+        <div id="methodPager"></div>
+      </div>
+    </div>
   </div>
- </div>
+</div>
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-groups">
   <div class="am-modal-dialog">
-  <div class="am-modal-hd">新建分组</div>
-   <form class="am-form am-form-horizontal">
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="groupName" placeholder="比如用户管理组">
-    </div>
-  </div>
+    <div class="am-modal-hd">新建分组</div>
+    <form class="am-form am-form-horizontal">
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="groupName" placeholder="比如用户管理组">
+        </div>
+      </div>
 
-  </form>
+    </form>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>保存</span>
@@ -141,67 +141,67 @@
 </div>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-method">
   <div class="am-modal-dialog">
-  <div class="am-modal-hd">方法</div>
-   <form class="am-form am-form-horizontal">
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="methodId" placeholder="">
-    </div>
-  </div>
-<div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">描述</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="methodName" placeholder="">
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">类型</label>
-    <div class="am-u-sm-10">
-        <select id="methodType" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
-		  <option value="add">单表新增</option>
-		  <option value="save">单表保存</option>
-		  <option value="delete">单表删除</option>
-		  <option value="query">单表查询不分页</option>
-		  <option value="queryPage">单表查询分页</option>
-		  <option value="querys">自定义查询不分页</option>
-		  <option value="queryPages">自定义查询分页</option>
-		</select>
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label  class="am-u-sm-2 am-form-label">关联表</label>
-    <div class="am-u-sm-10">
-     <select id="tableSelect" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
-		  <option value="null">空</option>
-		</select>
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询列</label>
-    <div class="am-u-sm-10">
-      <div class="am-input-group am-input-group-primary">
-      <input type="text" class="am-form-field" id="searchColumn">
-      <span class="am-input-group-btn">
+    <div class="am-modal-hd">方法</div>
+    <form class="am-form am-form-horizontal">
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">名称</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="methodId" placeholder="">
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">描述</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="methodName" placeholder="">
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">类型</label>
+        <div class="am-u-sm-10">
+          <select id="methodType" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
+            <option value="add">单表新增</option>
+            <option value="save">单表保存</option>
+            <option value="delete">单表删除</option>
+            <option value="query">单表查询不分页</option>
+            <option value="queryPage">单表查询分页</option>
+            <option value="querys">自定义查询不分页</option>
+            <option value="queryPages">自定义查询分页</option>
+          </select>
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label  class="am-u-sm-2 am-form-label">关联表</label>
+        <div class="am-u-sm-10">
+          <select id="tableSelect" data-am-selected="{maxHeight: 100,btnWidth: '100%', btnSize: 'sm', btnStyle: 'secondary'}">
+            <option value="null">空</option>
+          </select>
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询列</label>
+        <div class="am-u-sm-10">
+          <div class="am-input-group am-input-group-primary">
+            <input type="text" class="am-form-field" id="searchColumn">
+            <span class="am-input-group-btn">
         <button class="am-btn am-btn-primary" type="button" onclick="tmBase.colmnSearch()"><span class="am-icon-search"></span></button>
       </span>
-      
-    </div>
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询参数</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="methodParamer" placeholder="">
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询条件</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="methodFilter" placeholder="">
-    </div>
-  </div>
-  </form>
+
+          </div>
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询参数</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="methodParamer" placeholder="">
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">查询条件</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="methodFilter" placeholder="">
+        </div>
+      </div>
+    </form>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>保存</span>
@@ -210,12 +210,12 @@
 </div>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-columns">
   <div class="am-modal-dialog">
-  <div class="am-modal-hd">关联表的字段列表</div>
-   <form class="am-form am-form-horizontal">
-     <table id="columnsTable" class="am-table am-table-striped am-table-hover table-main">
-        </table>
+    <div class="am-modal-hd">关联表的字段列表</div>
+    <form class="am-form am-form-horizontal">
+      <table id="columnsTable" class="am-table am-table-striped am-table-hover table-main">
+      </table>
 
-  </form>
+    </form>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>保存</span>

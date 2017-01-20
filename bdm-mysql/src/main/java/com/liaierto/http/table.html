@@ -17,25 +17,25 @@
   <link rel="stylesheet" href="assets/css/admin.css">
   <link href="jd/css/plugins/jqgrid/ui.jqgrid.css" rel="stylesheet">
   <link href="jd/css/style.css?v=2.2.0" rel="stylesheet">
-    
+
   <script src="//cdn.bootcss.com/datatables/1.10.9/js/jquery.js"></script>
   <script type="text/javascript" src="assets/json/jquery.json-2.2.js"></script>
-  <script type="text/javascript" src="assets/json/jsonpath-0.8.0.js"></script> 
+  <script type="text/javascript" src="assets/json/jsonpath-0.8.0.js"></script>
   <script src="jd/js/plugins/jqgrid/i18n/grid.locale-cn.js"></script>
   <script src="jd/js/plugins/jqgrid/jquery.jqGrid.min.js"></script>
   <script src="assets/js/amazeui.min.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="TM/tmbase.js"></script>
   <script>
-  
-  $(document).ready(function() {
- 	   
-	  tmBase.callRemot("objectService", "query",function(talbes){
-		   tmBase.tableAppend(talbes);
-		   tmBase.dataTableInit();
-		  });
- 	    
-  });
+
+    $(document).ready(function() {
+
+      tmBase.callRemot("objectService", "query",function(talbes){
+        tmBase.tableAppend(talbes);
+        tmBase.dataTableInit();
+      });
+
+    });
   </script>
 </head>
 <body>
@@ -69,8 +69,8 @@
   <!-- sidebar start -->
   <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
     <div class="am-offcanvas-bar admin-offcanvas-bar">
-    <ul class='am-list admin-sidebar-list' id="tables">
-    </ul>
+      <ul class='am-list admin-sidebar-list' id="tables">
+      </ul>
     </div>
   </div>
   <!-- sidebar end -->
@@ -96,43 +96,43 @@
 
     <div class="am-g">
       <div class="am-u-sm-12">
-          <table id="dataTable" class="am-table am-table-striped am-table-hover table-main">
+        <table id="dataTable" class="am-table am-table-striped am-table-hover table-main">
         </table>
-         <div id="dataTablePager"></div>
-	  </div>
-	</div>
+        <div id="dataTablePager"></div>
+      </div>
+    </div>
   </div>
- </div>
+</div>
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
   <div class="am-modal-dialog">
-  <div class="am-modal-hd">给这张表起个名字吧</div>
-   <form class="am-form am-form-horizontal">
-  <div class="am-form-group">
-    <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">表名称</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="tableName" placeholder="输入表名称,比如user">
-    </div>
-  </div>
-  <div class="am-form-group">
-    <label for="doc-ipt-2" class="am-u-sm-2 am-form-label">表描述</label>
-    <div class="am-u-sm-10">
-      <input type="text" id="tableDesc" placeholder="设置一个表描述,比如用户表">
-    </div>
-  </div>
-  <div class="am-form-group">
-    <div class="am-u-sm-offset-1 am-u-sm-10">
-        <label class="am-radio-inline">
-        <input type="radio"  value="c" name="radio"> 创建表结构
-      </label>
-      <label class="am-radio-inline">
-        <input type="radio" value="u" name="radio"> 修改表结构
-      </label>
-    </div>
-  </div>
+    <div class="am-modal-hd">给这张表起个名字吧</div>
+    <form class="am-form am-form-horizontal">
+      <div class="am-form-group">
+        <label for="doc-ipt-3" class="am-u-sm-2 am-form-label">表名称</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="tableName" placeholder="输入表名称,比如user">
+        </div>
+      </div>
+      <div class="am-form-group">
+        <label for="doc-ipt-2" class="am-u-sm-2 am-form-label">表描述</label>
+        <div class="am-u-sm-10">
+          <input type="text" id="tableDesc" placeholder="设置一个表描述,比如用户表">
+        </div>
+      </div>
+      <div class="am-form-group">
+        <div class="am-u-sm-offset-1 am-u-sm-10">
+          <label class="am-radio-inline">
+            <input type="radio"  value="c" name="radio"> 创建表结构
+          </label>
+          <label class="am-radio-inline">
+            <input type="radio" value="u" name="radio"> 修改表结构
+          </label>
+        </div>
+      </div>
 
-  </form>
+    </form>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>保存</span>

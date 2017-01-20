@@ -4,34 +4,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.liaierto.bean.IDataItem;
-import com.liaierto.utils.JsonObjectTools;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 
 public class TSaveMysqlPugin {
 	private static Log log = LogFactory.getLog(TSaveMysqlPugin.class);
 
-    public  boolean update(IDataItem item,String content) throws Exception {
+    public  boolean update(Map<String,Object> item, String content) throws Exception {
         JSONArray  dataArray = null;
         JSONObject rowData   = null;
         JSONObject filter    = null;
         PreparedStatement statement = null;
         String[] valus = null;
         try {
-        	Connection con = (Connection) item.getValue("connection");
+        	Connection con = (Connection) item.get("connection");
         	
-        	JSONObject cont = JsonObjectTools.getJSObj(content);
-        	dataArray = JsonObjectTools.getJSAObj(cont.getString("rows"));
-        	filter = JsonObjectTools.getJSObj(cont.getString("filter"));
+        	JSONObject cont = JSONObject.parseObject(content);
+        	dataArray = JSONArray.parseArray(cont.getString("rows"));
+        	filter = JSONObject.parseObject(cont.getString("filter"));
         	String value = filter.getString("value");
-        	String fileterKey = item.getString("filter");//过滤参数
+        	String fileterKey = item.get("filter").toString();//过滤参数
         	if(!"".equals(value)){
         		valus = value.split(",");
         	}
@@ -39,7 +37,7 @@ public class TSaveMysqlPugin {
         	while (iter.hasNext()) {
         		StringBuffer sql  =  new StringBuffer();
         		StringBuffer where = new StringBuffer();
-                sql.append("update "+ item.getString("tableName")+ " set ");
+                sql.append("update "+ item.get("tableName")+ " set ");
                 where.append(" where 1=1");
                 if(!"".equals(fileterKey)){
                 	where.append(" and ");

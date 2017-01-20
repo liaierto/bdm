@@ -3,8 +3,8 @@ package com.liaierto.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
- *�����ڵĲ���
- * <p>Description: ���ڲ���������</p>
+ *日期管理类
+ * <p>Description: 日期管理类</p>
  * <p>Copyright: Copyright (c) 201301</p>
  * <p>Company: </p>
  * @author Pengyk

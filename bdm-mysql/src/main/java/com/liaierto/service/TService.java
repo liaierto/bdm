@@ -2,8 +2,9 @@ package com.liaierto.service;
 
 
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 
-import com.liaierto.bean.IFormData;
 import com.liaierto.bean.InputForm;
 import com.liaierto.bean.IQueryDB;
 import com.liaierto.dao.TDao;
@@ -29,11 +30,11 @@ public class TService implements IService {
 		return this.mDao.update(inputForm);
 	}
 
-	public IFormData query(IQueryDB queryDBManager) {
+	public List<Map<String,Object>> query(IQueryDB queryDBManager) {
 		return this.mDao.query(queryDBManager);
 	}
 
-	public IFormData queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage) {
+	public List<Map<String,Object>> queryByPage(IQueryDB queryDBManager, Integer pageRow,int curentPage) {
 		return this.mDao.queryByPage(queryDBManager, pageRow, curentPage);
 	}
 

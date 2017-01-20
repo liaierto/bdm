@@ -8,35 +8,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.liaierto.bean.IDataItem;
-import com.liaierto.utils.JsonObjectTools;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 
 public class TQuerysMysqlPugin {
 	private static Log log = LogFactory.getLog(TQuerysMysqlPugin.class);
     
 
-    public  String query(IDataItem item,String content) throws Exception {
+    public  String query(Map<String,Object> item, String content) throws Exception {
         ResultSet         resultSet    = null;
         JSONObject filter = null;
         JSONObject ret = new JSONObject();
         PreparedStatement statement = null;
         String[] valus = null;
         try {
-        	Connection con = (Connection) item.getValue("connection");
+        	Connection con = (Connection) item.get("connection");
         	
-        	JSONObject cont = JsonObjectTools.getJSObj(content);
-        	filter = JsonObjectTools.getJSObj(cont.getString("filter"));
+        	JSONObject cont = JSONObject.parseObject(content);
+        	filter = JSONObject.parseObject(cont.getString("filter"));
         	String value = filter.getString("value");
-        	String fileterKey = item.getString("filter");//过滤参数
-        	String parameter  = item.getString("parameter");//字段转换参数
+        	String fileterKey = item.get("filter").toString();//过滤参数
+        	String parameter  = item.get("parameter").toString();//字段转换参数
         	if(!"".equals(value)){
         		valus = value.split(",");
         	}
