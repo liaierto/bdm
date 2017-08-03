@@ -104,20 +104,20 @@
 	         },
 	         onPaging: function(pgButton){//分页事件  
 	          	
-		            if(pgButton=="next_Pager"){
+		            if(pgButton=="next_methodPager"){
 		            	currentPage = currentPage+1;
 		            }
-		            if(pgButton=="prev_Pager"){
+		            if(pgButton=="prev_methodPager"){
 		            	currentPage = currentPage-1;
 		            }
-		            if(pgButton=="last_Pager"){
+		            if(pgButton=="last_methodPager"){
 
-		            	currentPage =$("#rowed5").getGridParam ('lastpage');
+		            	currentPage =$("#methodTable").getGridParam ('lastpage');
 		            }
-		            if(pgButton=="first_Pager"){
+		            if(pgButton=="first_methodPager"){
 		            	currentPage=1;
 		            }
-		            methodTable.currentpage =currentPage;
+				        methodParmater.currentpage =currentPage;
 		                $("#methodTable").setGridParam ({ postData: {"service": "methodService","method": "queryPage", "parameter":$.toJSON(methodParmater) }}).trigger('reloadGrid');
 		            },
 				autowidth: true
@@ -349,17 +349,17 @@
            },
            onPaging: function(pgButton){//分页事件  
             	
-  	            if(pgButton=="next_Pager"){
+  	            if(pgButton=="next_dataTablePager"){
   	            	currentPage = currentPage+1;
   	            }
-  	            if(pgButton=="prev_Pager"){
+  	            if(pgButton=="prev_dataTablePager"){
   	            	currentPage = currentPage-1;
   	            }
-  	            if(pgButton=="last_Pager"){
+  	            if(pgButton=="last_dataTablePager"){
 
   	            	currentPage =$("#dataTable").getGridParam ('lastpage');
   	            }
-  	            if(pgButton=="first_Pager"){
+  	            if(pgButton=="first_dataTablePagerr"){
   	            	currentPage=1;
   	            }
   	            tabbleParmater.currentpage =currentPage;
@@ -419,7 +419,7 @@
 		          obj.description=$("#tableDesc").val();
 		          obj.type=type;
 		          obj.rows=jQuery("#dataTable").jqGrid("getRowData");
-		          tmBase.callRemots("tableService", "tableManage",obj,function(pResult){
+		          tmBase.callRemots("objectService", "createObject",obj,function(pResult){
 		        	  if(pResult.code==1){
 			            	 alert("保存成功");
 			             }else{

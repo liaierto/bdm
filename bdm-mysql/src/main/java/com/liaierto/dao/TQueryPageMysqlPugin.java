@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,10 +58,17 @@ public class TQueryPageMysqlPugin {
         	sql.append(queryClomn);
         	sql.append(" from ");
         	sql.append(item.get("tableName"));
-        	sql.append(" where 1=1 and ");
+        	sql.append(" where 1=1 ");
+
+			if(!StringUtils.isBlank(fileterKey)){
+				sql.append(" and ");
+			}
         	String queryCountSql = sql.append(fileterKey).toString();
+
         	sql.append(" limit "+(pageRow*(curentPage-1))+","+pageRow);
-        	
+
+			System.out.print(sql.toString());
+
         	statement = con.prepareStatement(sql.toString());
         	if(valus!=null){
         		for(int i=0;i<valus.length;i++){

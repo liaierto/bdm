@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.liaierto.service.interfaces.IObjectMetaService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -211,7 +212,15 @@ public class TObjectService extends TService implements IObjectService {
 	            queryDB.setWhereFileds("role", contObj.getString("role"));
 	            queryDB.setWhereFileds("object",obj );
 				List<Map<String,Object>> formData = super.query(queryDB);
-	            if(createTable(name,formData)){
+				if(formData==null || formData.size()==0){
+					add(content);
+					TObjectMetaService metaService = new TObjectMetaService();
+					metaService.setStatement(this.getStatement());
+					metaService.update(content);
+
+				}
+				formData = super.query(queryDB);
+	            if(createTable(obj,formData)){
 	            	dataItem.put("code", ResultMsg.sucessCode);
 	        		dataItem.put("msg", ResultMsg.sucessMsg);
 	            }else{
